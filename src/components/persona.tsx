@@ -11,8 +11,8 @@ export function Persona() {
     <Link href='/' className='hover:bg-sidebar-accent rounded-md p-2'>
       <SidebarMenu>
         <SidebarMenuItem className='flex items-center gap-3'>
-          <Avatar>
-            <AvatarImage src='https://github.com/shadcn.png' />
+          <Avatar className='size-10'>
+            <AvatarImage className='object-cover' src='./photo.png' />
             <AvatarFallback>RA</AvatarFallback>
           </Avatar>
           <div className='flex flex-col'>

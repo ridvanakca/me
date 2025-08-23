@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
 const geistSans = Geist({
@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Ridvan Akca",
-  description: "My corner of the internet - sharing knowledge, keeping a journal, and documenting my journey."
+  description: "My corner of the internet - documenting my journey."
 };
 
 export default function RootLayout({
@@ -32,7 +32,11 @@ export default function RootLayout({
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-              <div className='flex flex-1 flex-col gap-4 p-4'>{children}</div>
+              <header className='md:hidden flex h-16 shrink-0 items-center gap-2 border-b px-4'>
+                {" "}
+                <SidebarTrigger className='-ml-1' />
+              </header>
+              <div className='flex flex-1 flex-col max-w-4xl mx-auto leading-7 py-8 md:pt-24 px-4 md:px-8'>{children}</div>
             </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>

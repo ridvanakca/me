@@ -15,13 +15,13 @@ const sidebar = [
     href: "/",
     icon: LampDesk,
     badge: "1"
-  },
-  {
-    name: "Feed",
-    href: "/feed",
-    icon: Rss,
-    badge: "2"
   }
+  // {
+  //   name: "Feed",
+  //   href: "/feed",
+  //   icon: Rss,
+  //   badge: "2"
+  // }
 ];
 
 const online = [
@@ -60,7 +60,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <Persona />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup key='group'>
           <SidebarGroupContent>
             <SidebarMenu>
