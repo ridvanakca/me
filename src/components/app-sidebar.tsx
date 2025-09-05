@@ -15,12 +15,18 @@ const sidebar = [
     href: "/",
     icon: LampDesk,
     badge: "1"
+  },
+  {
+    name: "Journey",
+    href: "/journey",
+    icon: Rss,
+    badge: "2"
   }
   // {
-  //   name: "Feed",
-  //   href: "/feed",
+  //   name: "Writings",
+  //   href: "/writings",
   //   icon: Rss,
-  //   badge: "2"
+  //   badge: "3"
   // }
 ];
 
