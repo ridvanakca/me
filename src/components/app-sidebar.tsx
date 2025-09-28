@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Persona } from "@/components/persona";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarRail, SidebarSeparator } from "@/components/ui/sidebar";
-import { ExternalLink, Github, LampDesk, Linkedin, Rss } from "lucide-react";
+import { Book, ExternalLink, Github, LampDesk, Linkedin, Rss } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
@@ -21,13 +21,13 @@ const sidebar = [
     href: "/journey",
     icon: Rss,
     badge: "2"
+  },
+  {
+    name: "Writings",
+    href: "/writings",
+    icon: Book,
+    badge: "3"
   }
-  // {
-  //   name: "Writings",
-  //   href: "/writings",
-  //   icon: Rss,
-  //   badge: "3"
-  // }
 ];
 
 const online = [

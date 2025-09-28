@@ -10,7 +10,7 @@ type AnchorProps = ComponentPropsWithoutRef<"a">;
 type BlockquoteProps = ComponentPropsWithoutRef<"blockquote">;
 
 const components = {
-  h1: (props: HeadingProps) => <h1 className='font-medium pt-12 mb-0' {...props} />,
+  h1: (props: HeadingProps) => <h1 className='font-medium mb-4 text-2xl' {...props} />,
   h2: (props: HeadingProps) => <h2 className='font-medium mt-8 mb-4' {...props} />,
   h3: (props: HeadingProps) => <h3 className='font-medium mt-8 mb-4' {...props} />,
   h4: (props: HeadingProps) => <h4 className='font-medium' {...props} />,

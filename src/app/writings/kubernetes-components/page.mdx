@@ -1,0 +1,33 @@
+# Learning Kubernetes Components
+
+This semester, one of the topics in my Cloud Computing course was Kubernetes. I’ve been exploring it for a while, and I want to share what I’ve learned by walking through a real example. Sometimes the best way to understand something is to see it in action, and that’s exactly what we’ll do here with a web application and a MongoDB database.
+
+## Components
+
+To start, imagine you have a web application that needs to talk to a database. The first step is the **Worker Node**, which is the server where all your applications run. Without a node, there would be no environment to host your containers, so it provides the compute, storage, and network resources needed.
+
+Inside the node, **Pods** are created. A Pod is the smallest deployable unit in Kubernetes and can hold one or more containers that share the same network and storage. In our example, one Pod will run the web application container, and another Pod will run MongoDB. Each Pod has its own IP address, allowing them to communicate internally. However, Pods are ephemeral and can die or be replaced at any time, which would make direct communication difficult.
+
+This is where **Services** come in. A Service provides a stable IP and DNS name for each Pod, decoupling the Pod lifecycle from communication endpoints. In our scenario, `web-service` points to the web application Pod, and `mongodb-service` points to the MongoDB Pod. Services also act as load balancers, directing traffic to healthy Pods when there are multiple replicas.
+
+To make the application accessible from the internet, we use **Ingress**. Ingress routes external HTTP or HTTPS requests to the correct Service, allowing users to access the web application via a domain name without knowing the underlying Pod IPs.
+
+Configuration and credentials are handled with **ConfigMaps** and **Secrets**. The database URL for the web application is stored in a ConfigMap, so it can be updated without rebuilding the application image. MongoDB credentials are stored in a Secret, which is base64 encoded and injected into the Pod securely.
+
+Since Pods are ephemeral, we need **Volumes** to persist data. The MongoDB Pod uses a Volume to store database files, ensuring that data remains intact even if the Pod or node is restarted or replaced.
+
+For scaling and replication, we create a **Deployment** for the web application. This defines how many replicas of the web Pod should run and ensures that if one Pod dies, Kubernetes automatically creates a new one. Deployments are ideal for stateless applications like web servers.
+
+Databases, however, are stateful. To handle replication and consistency for MongoDB, we use a **StatefulSet**. StatefulSets ensure that each database replica has persistent storage and that reads and writes are coordinated, preventing data inconsistencies.
+
+## Scenario in Action
+
+Imagine a user opens their browser and sends a request to access the web application. The request first reaches **Ingress**, which checks the domain and forwards it to **web-service**, the Service responsible for the web pods. The Service directs the request to one of the running Pods in the Deployment. That Pod retrieves the database URL from the **ConfigMap** and uses the credentials stored in the **Secret** to query MongoDB through **mongodb-service**. MongoDB reads and writes the data from its attached **Volume**, then the response is sent back through the same path to the user. The request is completed seamlessly without the user noticing any of the underlying complexity.
+
+Now imagine one of the web Pods suddenly crashes. Kubernetes detects the failure and immediately spins up a new Pod based on the Deployment definition. The Service automatically starts routing requests to the healthy Pods, so users continue accessing the web application without interruption. Meanwhile, the new Pod pulls the configuration from the ConfigMap and connects to MongoDB using the Secret, just like the previous Pod did.
+
+I hope this blog has been helpful in showing how Kubernetes components work together in real scenarios and how they make deploying and managing applications much easier.
+
+export const metadata = {
+  title: "Learning Kubernetes | Ridvan Akca"
+};
