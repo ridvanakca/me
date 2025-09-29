@@ -1,0 +1,56 @@
+# Kubernetes Namespaces Explained
+
+As I kept exploring Kubernetes, one concept that helped me make sense of organizing resources was **Namespaces**. You can think of them as virtual clusters inside a single physical cluster. Instead of throwing everything into one big bucket, Namespaces let you group and separate resources logically.
+
+## Default Namespaces
+
+When you first create a cluster, Kubernetes provides four namespaces out of the box. You can list them with the command:
+
+```bash
+kubectl get namespaces
+```
+
+- **kube-system** holds the system processes that keep the cluster running. These are critical components managed by Kubernetes itself, so you generally don’t create or modify anything here.
+- **kube-public** contains data that can be accessed publicly. For example, it includes a ConfigMap with cluster information that’s available even without authentication. You can see it with `kubectl cluster-info`.
+- **kube-node-lease** is where each Node has a lease object that records its heartbeat. This lets Kubernetes quickly determine if a Node is still available.
+- **default** is where your resources go if you don’t specify another namespace. At the beginning, when you’re just learning Kubernetes, you’ll probably use this namespace most often.
+
+## Creating New Namespaces
+
+You’re not limited to the default ones. You can create your own namespaces using a simple command:
+
+```bash
+kubectl create namespace my-namespace
+```
+
+Or by defining them in a configuration file. This flexibility allows you to better organize applications as they grow in complexity.
+
+## Why Use Namespaces?
+
+Imagine you only use the default namespace for everything. Over time, as you add Deployments, Services, ConfigMaps, and other resources, things get messy. Consequently, with multiple users working in the same space, it becomes even harder to keep track of what belongs where. Namespaces solve this problem by providing a way to group related resources together. For example, you could have a `database` namespace that contains your database and all its dependencies. Similarly, a separate `monitoring` namespace could hold Prometheus and related tools. Additionally, you might even have an `elastic` namespace for Elasticsearch and Kibana. This grouping makes the cluster easier to navigate and manage.
+
+Namespaces also help with **resource sharing**. Suppose both your staging and development environments need Elasticsearch. Instead of deploying Elasticsearch twice, you can set up a shared `elastic` namespace. Additionally, they support **blue/green deployments**, allowing you to run two production versions (blue and green) in the same cluster while sharing common resources.
+
+Another important use case is **access control and quotas**. If two teams are working in the same cluster, each can have its own namespace. Consequently, you can restrict them to their namespace and also limit how much CPU, RAM, or storage they can consume. This ensures fair distribution of resources across teams and applications.
+
+## Characteristics of Namespaces
+
+Namespaces have some important characteristics to keep in mind. Most resources, like ConfigMaps and Secrets, are namespace-specific, which means they don’t automatically cross namespace boundaries. On the other hand, Services can be shared across namespaces when needed.
+
+However, some resources—like Volumes—are cluster-wide and cannot be confined to a namespace. Therefore, when you create a Volume, it is available to the entire cluster.
+
+## Scenario in Action
+
+Consider two teams, Team A and Team B, working on the same Kubernetes cluster. Team A manages the e-commerce application, while Team B handles the analytics platform. Without namespaces, all their Deployments, Services, and ConfigMaps would pile up together, making it difficult to determine ownership.
+
+Instead, Team A works in an `ecommerce` namespace and Team B works in an `analytics` namespace. As a result, both teams can safely manage their resources without interfering with each other. If Team A needs a ConfigMap for database configuration, it exists only in `ecommerce`. Similarly, Team B can define its own ConfigMap with the same name in `analytics`, avoiding conflicts. At the same time, both teams share a central `monitoring` namespace where Prometheus is deployed, allowing everyone to benefit from the same monitoring setup.
+
+This setup not only keeps the cluster organized but also ensures fair resource usage and prevents accidental interference between teams.
+
+## Conclusion
+
+In conclusion, namespaces are a feature that teams can truly benefit from when using Kubernetes. They allow for logical grouping, access control, resource sharing, and clearer organization of resources. I hope I have expressed this in a clear and understandable way. See you in the next blog post!
+
+export const metadata = {
+title: "Kubernetes Namespaces Explained | Ridvan Akca"
+};
