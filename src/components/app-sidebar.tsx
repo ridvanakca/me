@@ -110,9 +110,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <ModeToggle />
-      </SidebarFooter>
+      <SidebarFooter>{/* <ModeToggle /> */}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

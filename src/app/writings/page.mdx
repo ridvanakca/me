@@ -1,3 +1,27 @@
 import { Date } from "@/components/date";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-<Date>2025-09-28</Date> - [Learning Kubernetes Components](/writings/kubernetes-components) | I'm learning Kubernetes step by step and documenting my journey.
+## My Writings
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Date</TableHead>
+      <TableHead>Title</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        <Date>2025-09-29</Date>
+      </TableCell>
+      <TableCell>[Undestanding Kubernetes Architecture](/writings/kubernetes-architecture)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>
+        <Date>2025-09-28</Date>
+      </TableCell>
+      <TableCell>[Learning Kubernetes Components](/writings/kubernetes-components)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

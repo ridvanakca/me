@@ -36,7 +36,7 @@ export default function RootLayout({
                 {" "}
                 <SidebarTrigger className='-ml-1' />
               </header>
-              <div className='flex flex-1 flex-col max-w-4xl mx-auto px-8 pb-4'>{children}</div>
+              <div className='flex flex-1 flex-col max-w-4xl mx-auto md:mx-0 md:ml-40 px-8 pb-4'>{children}</div>
             </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>

@@ -1,0 +1,37 @@
+# Understanding Kubernetes Architecture
+
+As I continued learning Kubernetes in my Cloud Computing course, I realized that understanding its architecture is just as important as knowing the individual components. Kubernetes is often described as a container orchestration platform, but behind the scenes, it’s really a set of processes running across different types of nodes that work together to keep applications running smoothly. Let’s break it down into two main parts: Worker Nodes and Master Nodes.
+
+## Worker Nodes
+
+Worker Nodes are the servers where the actual applications run. Each Node can host multiple **Pods**, and those Pods contain the containers that run our applications or databases. But Pods don’t just appear out of nowhere. There are three key processes that must be installed on every Worker Node to manage them.
+
+The first process is the **container runtime**, such as Docker or containerd. This is what actually runs the containers inside the Pods. Without a container runtime, the Node would have no way to start or stop containers.
+
+The second process is the **Kubelet**, which acts as the bridge between Kubernetes and the Node. The Kubelet talks to both the container runtime and the Node itself. When a new Pod needs to be created, the Kubelet takes care of starting the container, assigning resources like CPU and memory, and keeping everything in sync with the cluster.
+
+The third process is **Kube Proxy**, which handles networking inside the cluster. When a request comes in through a **Service**, Kube Proxy is responsible for forwarding that request to the right Pod. Without Kube Proxy, Services wouldn’t know how to connect traffic to Pods, and communication inside the cluster would fall apart.
+
+## Master Nodes
+
+So far, we’ve seen how Worker Nodes run applications. But how are Pods scheduled? How do we know when to restart a Pod if it fails? Who keeps track of the entire cluster state? That’s the role of the Master Nodes.
+
+Master Nodes don’t run application Pods themselves. Instead, they run four key processes that control and coordinate everything across the cluster.
+
+The first process is the **API Server**, which acts as the front door to the cluster. Whenever you interact with Kubernetes—whether through `kubectl`, the Kubernetes Dashboard, or directly with the API—you’re talking to the API Server. It validates your requests, checks authentication and authorization, and serves as the single entry point into the cluster.
+
+Next comes the **Scheduler**. When the API Server receives a request to create a new Pod, it hands it over to the Scheduler. The Scheduler decides which Worker Node the Pod should run on, based on available resources and other constraints. It’s like a smart dispatcher making sure workloads are spread efficiently across the cluster.
+
+The third component is the **Controller Manager**. Its job is to constantly watch the cluster state. If a Pod dies, the Controller Manager notices the change and requests the Scheduler to place a replacement Pod on a suitable Worker Node. This cycle ensures that the desired state of the cluster matches the actual state.
+
+Finally, there is **etcd**, the cluster’s key-value store. You can think of etcd as the brain of Kubernetes. Every change in the cluster—whether it’s a new Pod, a deleted Node, or a configuration update—is recorded in etcd. This is where the cluster state lives. When the Scheduler needs to know what resources are available, or when the Controller Manager needs to detect failures, they rely on etcd for up-to-date information. It’s important to note that etcd doesn’t store application data like user files or databases; it only stores the state of the cluster itself.
+
+## Scenario in Action
+
+Imagine you want to deploy a new web application. You run `kubectl apply -f app.yaml` to create a Pod. That request first goes to the **API Server**, which checks if you’re allowed to make it. Once validated, the API Server writes this desired state to **etcd**. Then it passes the scheduling job to the **Scheduler**, which looks at all the Worker Nodes, checks their resources, and decides where the new Pod should run. The Scheduler tells the chosen Node’s **Kubelet** to start the Pod, which in turn asks the **container runtime** to pull the container image and run it. Finally, **Kube Proxy** ensures that when users send requests to the Service, those requests find their way to your new Pod.
+
+Now imagine that Pod suddenly crashes. The **Controller Manager** detects this change in state and immediately tells the Scheduler to place a replacement Pod on a healthy Worker Node. Within moments, the cluster heals itself, and your users might not even notice anything went wrong.
+
+## Conclusion
+
+With Worker Nodes and Master Nodes working hand in hand, Kubernetes is able to manage containerized applications reliably. I tried to give examples so that the Kubernetes architecture becomes easier to understand. This way of learning through scenarios helps me grasp concepts much better, and I hope it has also been helpful for you.
